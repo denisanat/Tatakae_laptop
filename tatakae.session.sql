@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS laptops (
 	camera SMALLINT,
 	battery SMALLINT,
 	power_supply SMALLINT,
-	wifi SMALLINT,
+	wifi SMALLINT
 );
 
 DROP TABLE IF EXISTS hardware;
@@ -34,13 +34,15 @@ SELECT * FROM laptops WHERE model = 1;
 
 SELECT * FROM hardware;
 
+SELECT * FROM users;
+
 INSERT INTO hardware(hardware_type, name)
 VALUES (1, 'Lenovo ThinkPad'),
 (2, 'AMD Ryzen™ 5 7535HS'),
 (3, 'Integrated'),
 (2, '13th Generation Intel® Core™ i5-1345U');
 
-INSERT INTO laptops(name, model, price, processor, graphic_card)
+INSERT INTO laptops(name, model, price, processor, graphics_card)
 VALUES ('ThinkPad X1 Carbon Gen 13 Aura Edition', 1, 1550.45, 2, 3),
 ('ThinkPad X1 Carbon Gen 11 Intel', 1, 1790.99, 4, 3);
 
