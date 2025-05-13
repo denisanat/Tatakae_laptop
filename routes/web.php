@@ -12,6 +12,8 @@ use App\Http\Controllers\UserController;
 Route::get('/', [LaptopController::class, 'getLaptops'])->name('home');
 
 Route::get('/laptop/{id}', [LaptopController::class, 'show'])->name('laptop');
+Route::post('/laptop/{id}/rate', [LaptopController::class, 'rate'])->name('laptop.rate');
+Route::post('/laptop/{id}/comment', [LaptopController::class, 'comment'])->name('laptop.comment');
 
 
 // USER ROUTES

@@ -30,11 +30,36 @@ CREATE TABLE IF NOT EXISTS hardware (
 	score REAL 
 );
 
+DROP TABLE IF EXISTS user_scores;
+CREATE TABLE IF NOT EXISTS user_scores (
+	id SERIAL PRIMARY KEY,
+	user_id INTEGER NOT NULL,
+	laptop_id INTEGER NOT NULL,
+	score SMALLINT NOT NULL
+);
+
+DROP TABLE IF EXISTS messages;
+CREATE TABLE IF NOT EXISTS messages (
+	id SERIAL PRIMARY KEY,
+	user_id INTEGER NOT NULL,
+	is_response BOOLEAN NOT NULL,
+	target_id INTEGER NOT NULL,
+	message TEXT
+);
+
 SELECT * FROM laptops WHERE model = 1;
 
 SELECT * FROM hardware;
 
 SELECT * FROM users;
+
+SELECT * FROM user_scores;
+
+SELECT * FROM messages;
+
+INSERT INTO messages(user_id, is_response, target_id, message)
+VALUES
+(1, false, 2, 'Hello World!');
 
 INSERT INTO hardware(hardware_type, name)
 VALUES (1, 'Lenovo ThinkPad'),

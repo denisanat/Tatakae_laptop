@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Laptop;
 use App\Models\Hardware;
+use App\Models\UserScore;
+use App\Models\Message;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
@@ -81,10 +83,59 @@ class LaptopController extends Controller
         return Inertia::render('Home', $props);
     }
 
+
     public function show($id)
     {
         $laptop = Laptop::findOrFail($id);
+        $recomended = Laptop::take(10)->get();
 
-        return Inertia::render('Laptop', ['laptop' => $laptop]);
+        // Laptop User Score
+        $userScore = UserScore::where('laptop_id', '=', $id)->where('user_id', '=', auth()->id())->get();
+
+        if ( count($userScore) > 0 )
+            $userScore = $userScore[0]->score;
+
+        else
+            $userScore = 0;
+
+        // Messages
+        $messages = Message::where('id', '=', $id)->get();
+
+        return Inertia::render('Laptop', [
+            'laptop' => $laptop,
+            'recomended' => $recomended,
+            'userScore' => $userScore,
+            'messages' => $messages
+        ]);
+    }
+
+
+    public function rate(Request $request, $laptop)
+    {
+        $request->validate([
+            'score' => ['required', 'integer', 'min:1', 'max:5'],
+        ]);
+
+        UserScore::updateOrCreate([
+                'user_id' => auth()->id(),
+                'laptop_id' => $laptop,
+            ], [
+                'score' => $request->score
+            ]
+        );
+
+        return back();
+    }
+
+    public function comment(Request $request, $laptop)
+    {
+        Message::updateOrCreate([
+            'user_id' => auth()->id(),
+            'is_response' => $request->isResponse,
+            'target_id' => $laptop,
+            'message' => $request->comment
+        ]);
+
+        return back();
     }
 }
