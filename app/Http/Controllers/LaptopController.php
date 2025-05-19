@@ -98,8 +98,8 @@ class LaptopController extends Controller
         else
             $userScore = 0;
 
-        // Messages
-        $messages = Message::where('id', '=', $id)->get();
+        // Comments
+        $messages = Message::where('target_id', '=', $id)->where('is_response', '=', false)->get();
 
         return Inertia::render('Laptop', [
             'laptop' => $laptop,
@@ -127,13 +127,82 @@ class LaptopController extends Controller
         return back();
     }
 
+
     public function comment(Request $request, $laptop)
     {
         Message::updateOrCreate([
             'user_id' => auth()->id(),
-            'is_response' => $request->isResponse,
+            'is_response' => FALSE,
             'target_id' => $laptop,
             'message' => $request->comment
+        ]);
+
+        return back();
+    }
+
+
+    public function reply(Request $request, $id)
+    {
+        Message::updateOrCreate([
+            'user_id' => auth()->id(),
+            'is_response' => TRUE,
+            'target_id' => $id,
+            'message' => $request->comment
+        ]);
+
+        return back();
+    }
+
+
+    public function getAnswers(Request $request, $id)
+    {
+        $answers = Message::where('is_response', true)
+            ->where('target_id', $id)
+            ->get();
+
+        return response()->json($answers);
+    }
+
+    public function goCreate(Request $request)
+    {
+        $props = [
+            'models' => Hardware::where('hardware_type', 1)->get(),
+            'processors' => Hardware::where('hardware_type', 2)->get(),
+            'graphic_cards' => Hardware::where('hardware_type', 3)->get(),
+            'memory_cards' => Hardware::where('hardware_type', 4)->get(),
+            'storages' => Hardware::where('hardware_type', 5)->get(),
+            'displays' => Hardware::where('hardware_type', 6)->get(),
+        ];
+
+        return Inertia::render('Create', $props);
+    }
+
+    public function createLaptop(Request $request)
+    {
+        Laptop::create([
+            'name' => $request->name,
+            'price' => $request->price,
+            'release_date' => $request->release_date,
+            'buying_link' => $request->site_link,
+            'image_link' => $request->image_link,
+            
+            'model' => $request->model,
+            'processor' => $request->processor,
+            'graphics_card' => $request->graphic_card,
+            'memory' => $request->memory,
+            'storage' => $request->storage,
+            'display' => $request->display,
+        ]);
+
+        return back();
+    }
+
+    public function createHardware(Request $request)
+    {
+        Hardware::create([
+            'name' => $request->name,
+            'hardware_type' => $request->type,
+            'score' => $request->score,
         ]);
 
         return back();

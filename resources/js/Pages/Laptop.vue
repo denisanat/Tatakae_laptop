@@ -11,6 +11,15 @@ const props = defineProps({
 
 const score = ref(props.userScore || 1);
 const comment = ref('');
+const reply = ref('');
+
+const replyingToId = ref(null);
+
+const showReplyBox = (id) => {
+	replyingToId.value = id;
+	comment.value = '';
+	reply.value = '';
+}
 
 const submitScore = () => { router.post(`/laptop/${props.laptop.id}/rate`, { score: score.value }, { preserveScroll: true }) };
 
@@ -20,6 +29,13 @@ const submitComment = () => {
 		isResponse: false 
 	}, { preserveScroll: true }) 
 };
+
+const submitReply = () => {
+	router.post(`/laptop/${replyingToId.value}/reply`, { 
+		comment: reply.value,
+		isResponse: false 
+	}, { preserveScroll: true }) 
+}
 
 </script>
 
@@ -47,4 +63,18 @@ const submitComment = () => {
 		<input type="text" v-model="comment">
 		<button class="primary-btn">Submit</button>
 	</form>
+
+	<div>
+		<ul v-for="message in messages" :key="message.id">
+			<li>{{ message.message }}</li>
+			<button @click="showReplyBox(message.id)">Reply</button>
+			<button @click="showAnswers(message.id)">Show replies</button>
+
+			<!-- Reply Box -->
+			<div v-if="replyingToId === message.id">
+				<input type="text" v-model="reply" placeholder="Your answer...">
+				<button @click="submitReply">Submit</button>
+			</div>
+		</ul>
+	</div>
 </template>

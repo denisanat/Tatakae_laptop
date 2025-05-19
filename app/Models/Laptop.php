@@ -8,4 +8,17 @@ class Laptop extends Model
 {
     protected $table = 'laptops';
     public $timestamps = false;
+    protected $fillable = [
+        'name',
+        'price',
+        'release_date',
+        'site_link',
+        'image_link',
+        'model',
+        'processor',
+        'graphic_card',
+        'memory',
+        'storage',
+        'display'
+    ];
 }

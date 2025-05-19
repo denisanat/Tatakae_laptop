@@ -8,4 +8,9 @@ class Hardware extends Model
 {
     protected $table = 'hardware';
     public $timestamps = false;
+    protected $fillable = [
+        'name',
+        'hardware_type',
+        'score'
+    ];
 }

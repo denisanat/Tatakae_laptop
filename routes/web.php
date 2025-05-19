@@ -14,6 +14,15 @@ Route::get('/', [LaptopController::class, 'getLaptops'])->name('home');
 Route::get('/laptop/{id}', [LaptopController::class, 'show'])->name('laptop');
 Route::post('/laptop/{id}/rate', [LaptopController::class, 'rate'])->name('laptop.rate');
 Route::post('/laptop/{id}/comment', [LaptopController::class, 'comment'])->name('laptop.comment');
+Route::post('/laptop/{id}/reply', [LaptopController::class, 'reply'])->name('laptop.reply');
+
+Route::get('/messages/{id}/answers', [LaptopController::class, 'getAnswers']);
+
+
+// CREATE ROUTES
+Route::get('/create', [LaptopController::class, 'goCreate'])->name('gocreate');
+Route::post('/create_hardware', [LaptopController::class, 'createHardware']);
+Route::post('/create_laptop', [LaptopController::class, 'createLaptop']);
 
 
 // USER ROUTES

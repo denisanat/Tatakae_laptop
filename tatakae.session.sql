@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS laptops (
 	release_date DATE,
 	page_score REAL,
 	user_score REAL,
-	buying_link VARCHAR(255),
+	site_link VARCHAR(255),
 	image_link VARCHAR(255),
 
 	-- hardware
