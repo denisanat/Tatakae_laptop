@@ -71,11 +71,19 @@ INSERT INTO laptops(name, model, price, processor, graphics_card)
 VALUES ('ThinkPad X1 Carbon Gen 13 Aura Edition', 1, 1550.45, 2, 3),
 ('ThinkPad X1 Carbon Gen 11 Intel', 1, 1790.99, 4, 3);
 
-INSERT INTO laptops(name)
-VALUES ('laptop #2'),('laptop #3'),('laptop #4'),('laptop #5'),('laptop #6'),
-('laptop #7'),('laptop #8'),('laptop #9'),('laptop #10'),('laptop #11'),('laptop #12'),
+INSERT INTO laptops(name, page_score)
+VALUES ('cosas #2', 4),('cosas #3', 5),('cosas #4', 6),('cosas #5', 7),('cosas #6', 8),
+('cosas #7', 9),('cosas #8', 10),('laptop #9'),('laptop #10'),('laptop #11'),('laptop #12'),
 ('laptop #13'),('laptop #14'),('laptop #15'),('laptop #16'),('laptop #17'),('laptop #18');
 
 INSERT INTO laptops(name, model)
 VALUES ('lap #1', 1), ('lap #2', 1), ('lap #3', 1), ('lap #4', 1), ('lap #5', 1),
  ('lap #6', 1), ('lap #7', 1), ('lap #8', 1), ('lap #9', 1), ('lap #10', 1), ('lap #11', 1);
+
+UPDATE laptops
+SET image_link = 'https://p2-ofp.static.pub//fes/cms/2024/08/28/fcd70qdguca5etsxhgazpeezkoam7p488088.png'
+WHERE id = 1;
+
+UPDATE laptops
+SET page_score = 5
+WHERE id = 1;

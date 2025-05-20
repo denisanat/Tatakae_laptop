@@ -13,8 +13,11 @@ use Inertia\Inertia;
 
 class LaptopController extends Controller
 {
+
     public function getLaptops(Request $request)
     {
+        $filters = [10 => 'page_score', 11 => 'user_score', 1 => 'processor', 2 => 'graphics_card', 3 => 'memory', 4 => 'storage', 5 => 'display'];
+
         $page = Laptop::when(
             $request->search, 
             function($query) use ($request) {
@@ -40,9 +43,9 @@ class LaptopController extends Controller
             }
 
         )->when(
-            $request->memory_card,
+            $request->memory,
             function($query) use ($request) {
-                $query->where('memory', '=', $request->memory_card);
+                $query->where('memory', '=', $request->memory);
             }
 
         )->when(
@@ -63,6 +66,13 @@ class LaptopController extends Controller
                 $query->where('power_supply', '=', $request->power_supply);
             }
 
+        )->when(
+            $request->sort,
+            function($query) use ($request, $filters) {
+                $query->where($filters[$request->sort], '!=', NULL);
+                $query->orderByDesc($filters[$request->sort]);
+            }
+
         )->paginate(12)->withQueryString();
 
         $props = [
@@ -78,6 +88,9 @@ class LaptopController extends Controller
             $props['models'] = Hardware::where('hardware_type', 1)->get();
             $props['processors'] = Hardware::where('hardware_type', 2)->get();
             $props['graphics_cards'] = Hardware::where('hardware_type', 3)->get();
+            $props['memory_cards'] = Hardware::where('hardware_type', 4)->get();
+            $props['storages'] = Hardware::where('hardware_type', 5)->get();
+            $props['displays'] = Hardware::where('hardware_type', 6)->get();
         }
 
         return Inertia::render('Home', $props);

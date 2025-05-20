@@ -9,6 +9,9 @@ const props = defineProps({
 	models: Array,
 	processors: Array,
 	graphics_cards: Array,
+	memory_cards: Array,
+	storages: Array,
+	displays: Array,
 
 	filters: Object,
 });
@@ -98,29 +101,42 @@ const getPaginationLabel = (label) => {
 			<option v-for="card in graphics_cards" :value="card.id">{{ card.name }}</option>
 		</select>
 
-		<!-- Memory cards -->
-		<!-- <select v-model="filters.memory" class="select_not_selected">
-			<option value=""></option>
-			<option v-for="memory in memories" :value="memory.id">{{ memory.name }}</option>
-		</select> -->
 
-		<!-- Storage cards -->
-		<!-- <select v-model="filters.storage" class="select_not_selected">
-			<option value=""></option>
+		<!-- Memory cards -->
+		<select v-if="filters.memory" v-model="filters.memory" class="select_selected">
+			<option value="">Memory cards</option>
+			<option v-for="memory in memory_cards" :value="memory.id">{{ memory.name }}</option>
+		</select>
+
+		<select v-else v-model="filters.memory" class="select_not_selected">
+			<option value="">Memory cards</option>
+			<option v-for="memory in memory_cards" :value="memory.id">{{ memory.name }}</option>
+		</select>
+
+
+		<!-- Storages -->
+		<select v-if="filters.storage" v-model="filters.storage" class="select_selected">
+			<option value="">Storages</option>
 			<option v-for="storage in storages" :value="storage.id">{{ storage.name }}</option>
-		</select> -->
+		</select>
+
+		<select v-else v-model="filters.storage" class="select_not_selected">
+			<option value="">Storages</option>
+			<option v-for="storage in storages" :value="storage.id">{{ storage.name }}</option>
+		</select>
+
 
 		<!-- Display -->
-		<!-- <select v-model="filters.display" class="select_not_selected">
-			<option value=""></option>
+		<select v-if="filters.display" v-model="filters.display" class="select_selected">
+			<option value="">Screen</option>
 			<option v-for="display in displays" :value="display.id">{{ display.name }}</option>
-		</select> -->
+		</select>
 
-		<!-- Power Supply -->
-		<!-- <select v-model="filters.power_supply" class="select_not_selected">
-			<option value=""></option>
-			<option v-for="power_supply in power_supplies" :value="power_supply.id">{{ power_supply.name }}</option>
-		</select> -->
+		<select v-else v-model="filters.display" class="select_not_selected">
+			<option value="">Screen</option>
+			<option v-for="display in displays" :value="display.id">{{ display.name }}</option>
+		</select>
+
 
 		<!-- Sort -->
 		<select v-if="filters.sort" v-model="filters.sort" class="select_selected">
@@ -129,6 +145,9 @@ const getPaginationLabel = (label) => {
 			<option value="11">User Score</option>
 			<option value="1">Processor</option>
 			<option value="2">Graphics Card</option>
+			<option value="3">Memory</option>
+			<option value="4">Storage</option>
+			<option value="5">Display</option>
 		</select>
 
 		<select v-else v-model="filters.sort" class="select_not_selected">
@@ -171,8 +190,15 @@ const getPaginationLabel = (label) => {
 		>
 			<Link 
 				:href="`/laptop/${laptop.id}`"
-				class="aspect-square w-[70%] border-2 flex items-center justify-center"
+				class="aspect-square w-[70%] flex items-center justify-center flex-col relative"
 			>
+				<p class="absolute top-2 left-2 bg-white bg-opacity-80 px-2 py-1 text-xl rounded z-10 orbiton-font text-black">{{ laptop.page_score }}</p>
+				<p class="absolute top-2 right-2 bg-white bg-opacity-80 px-2 py-1 text-xl rounded z-10 orbiton-font text-red-500">{{ laptop.page_score }}</p>
+				<img 
+					:src="laptop.image_link" 
+					:alt="`Imagen de ${laptop.name}`" 
+					class=""
+				/>
 				{{ laptop.name }}
 			</Link>
 		</li>
