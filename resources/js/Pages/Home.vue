@@ -193,13 +193,13 @@ const getPaginationLabel = (label) => {
 				class="aspect-square w-[70%] flex items-center justify-center flex-col relative"
 			>
 				<p class="absolute top-2 left-2 bg-white bg-opacity-80 px-2 py-1 text-xl rounded z-10 orbiton-font text-black">{{ laptop.page_score }}</p>
-				<p class="absolute top-2 right-2 bg-white bg-opacity-80 px-2 py-1 text-xl rounded z-10 orbiton-font text-red-500">{{ laptop.page_score }}</p>
+				<p class="absolute top-2 right-2 bg-white bg-opacity-80 px-2 py-1 text-xl rounded z-10 orbiton-font text-red-500">{{ laptop.user_score }}</p>
 				<img 
 					:src="laptop.image_link" 
-					:alt="`Imagen de ${laptop.name}`" 
+					:alt="`${laptop.name} image`" 
 					class=""
 				/>
-				{{ laptop.name }}
+				{{ `${laptop.name} - ${laptop.price}€` }}
 			</Link>
 		</li>
 	</ul>

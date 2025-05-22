@@ -102,22 +102,13 @@ class LaptopController extends Controller
         $laptop = Laptop::findOrFail($id);
         $recomended = Laptop::take(10)->get();
 
-        // Laptop User Score
-        $userScore = UserScore::where('laptop_id', '=', $id)->where('user_id', '=', auth()->id())->get();
-
-        if ( count($userScore) > 0 )
-            $userScore = $userScore[0]->score;
-
-        else
-            $userScore = 0;
-
         // Comments
         $messages = Message::where('target_id', '=', $id)->where('is_response', '=', false)->get();
 
         return Inertia::render('Laptop', [
             'laptop' => $laptop,
             'recomended' => $recomended,
-            'userScore' => $userScore,
+            'userScore' => $laptop['user_score'],
             'messages' => $messages
         ]);
     }
@@ -136,6 +127,19 @@ class LaptopController extends Controller
                 'score' => $request->score
             ]
         );
+
+        $userRatings = UserScore::where('laptop_id', '=', $laptop)->get()->toArray();
+
+        $mean = 0;
+        foreach( $userRatings as $rating )
+            $mean += $rating['score'];
+
+        $mean = $mean / count($userRatings);
+        
+        Laptop::where('id', '=', $laptop)->update([
+            'id' => $laptop,
+            'user_score' => $mean
+        ]);
 
         return back();
     }
