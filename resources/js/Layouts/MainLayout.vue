@@ -1,7 +1,7 @@
 <template>
-	<div class="h-dvh">
+	<div class="w-vw flex flex-col">
 
-		<header class="flex items-center justify-between bg-red-500 orbiton-font h-1/10 px-6 w-screen box-border">
+		<header class="h-[100px] px-6 bg-red-500 orbiton-font flex items-center justify-between">
 			<span class="text-white text-5xl">Tatakae Laptop</span>
 
 			<div>
@@ -41,7 +41,7 @@
 			
 		</header>
 
-		<main class="h-9/10 box-border">
+		<main class="m-5">
 			<slot />
 		</main>
 
@@ -69,4 +69,15 @@
   	font-weight: 700;
   	font-style: normal;
 }
+
+body {
+  /* background: linear-gradient(to bottom, #ffffff, #f1f1f1); */
+  background-color: #fcfcfc;
+}
+
+section {
+  box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+  border-radius: 8px;
+}
+
 </style>

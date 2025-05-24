@@ -16,7 +16,7 @@ class LaptopController extends Controller
 
     public function getLaptops(Request $request)
     {
-        $filters = [10 => 'page_score', 11 => 'user_score', 1 => 'processor', 2 => 'graphics_card', 3 => 'memory', 4 => 'storage', 5 => 'display'];
+        $filters = [10 => 'page_score', 11 => 'user_score', 12 => 'price', 1 => 'processor', 2 => 'graphics_card', 3 => 'memory', 4 => 'storage', 5 => 'display'];
 
         $page = Laptop::when(
             $request->search, 

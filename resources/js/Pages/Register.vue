@@ -23,12 +23,13 @@ const submit = () => {
 
 
 <template>
-	<div class="w-full place-items-center login-container">
+
+	<section class="w-2/4 mx-auto bg-white p-10">
 		<Head title="Register"></Head>
 
-		<h1 class="text-3xl my-5">Create account</h1>
+		<h1 class="text-center text-3xl">Create account</h1>
 
-		<div class="w-1/4 mx-auto">
+		<div>
 			<form @submit.prevent="submit">
 				<div class="mb-6">
 					<label for="name">Name</label>	<br>
@@ -59,5 +60,5 @@ const submit = () => {
 				</div>
 			</form>
 		</div>
-	</div>
+	</section>
 </template>

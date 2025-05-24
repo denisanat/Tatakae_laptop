@@ -60,7 +60,7 @@ const getPaginationLabel = (label) => {
 
 <template>
 	
-	<div class="flex mb-4 flex-wrap" id="filters_box">
+	<section class="mb-4 p-2 flex flex-wrap bg-white" id="filters_box">
 
 		<!-- SELECTS -->
 		<input type="search" placeholder="Search" v-model="filters.search" class="select_not_selected">
@@ -143,6 +143,7 @@ const getPaginationLabel = (label) => {
 			<option value="">Sort</option>
 			<option value="10">Score</option>
 			<option value="11">User Score</option>
+			<option value="12">Price</option>
 			<option value="1">Processor</option>
 			<option value="2">Graphics Card</option>
 			<option value="3">Memory</option>
@@ -154,55 +155,64 @@ const getPaginationLabel = (label) => {
 			<option value="">Sort</option>
 			<option value="10">Score</option>
 			<option value="11">User Score</option>
+			<option value="12">Price</option>
 			<option value="1">Processor</option>
 			<option value="2">Graphics Card</option>
+			<option value="3">Memory</option>
+			<option value="4">Storage</option>
+			<option value="5">Display</option>
 		</select>
 
-	</div>
+	</section>
 
-	<!-- Pagination links -->
-	<div class="flex justify-between my-10">
-		<p>{{ page.total }} results</p>
-		
-		<div>
-			<template v-for="link in page.links" :key="link.label">
-				<Link 
-					v-if="link.url" 
-					v-html="getPaginationLabel(link.label)"
-					:href="link.url"
-					class="p-1 mx-1 select-none"
-					:class="{ 'text-red-500': link.active }"
-				/>
-				<span
-					v-else
-					v-html="getPaginationLabel(link.label)"
-					class="p-1 mx-1 text-gray-400 select-none"
-				/>
-			</template>
+	
+
+	<section class="p-5 bg-white">
+
+		<!-- Pagination links -->
+		<div class="flex justify-between">
+			<p>{{ page.total }} results</p>
+			
+			<div>
+				<template v-for="link in page.links" :key="link.label">
+					<Link 
+						v-if="link.url" 
+						v-html="getPaginationLabel(link.label)"
+						:href="link.url"
+						class="p-1 mx-1 select-none"
+						:class="{ 'text-red-500': link.active }"
+					/>
+					<span
+						v-else
+						v-html="getPaginationLabel(link.label)"
+						class="p-1 mx-1 text-gray-400 select-none"
+					/>
+				</template>
+			</div>
 		</div>
-	</div>
 
-	<ul class="grid grid-cols-2 md:grid-cols-6 gap-x-4 gap-y-2 my-5 place-items-center">
-		<li 
-			v-for="laptop in page.data" 
-			:key="laptop.id" 
-			class="w-full flex justify-center my-5"
-		>
-			<Link 
-				:href="`/laptop/${laptop.id}`"
-				class="aspect-square w-[70%] flex items-center justify-center flex-col relative"
+		<ul class="grid grid-cols-2 md:grid-cols-6 gap-x-4 gap-y-2 my-5 place-items-center">
+			<li 
+				v-for="laptop in page.data" 
+				:key="laptop.id" 
+				class="w-full flex justify-center my-5"
 			>
-				<p class="absolute top-2 left-2 bg-white bg-opacity-80 px-2 py-1 text-xl rounded z-10 orbiton-font text-black">{{ laptop.page_score }}</p>
-				<p class="absolute top-2 right-2 bg-white bg-opacity-80 px-2 py-1 text-xl rounded z-10 orbiton-font text-red-500">{{ laptop.user_score }}</p>
-				<img 
-					:src="laptop.image_link" 
-					:alt="`${laptop.name} image`" 
-					class=""
-				/>
-				{{ `${laptop.name} - ${laptop.price}€` }}
-			</Link>
-		</li>
-	</ul>
+				<Link 
+					:href="`/laptop/${laptop.id}`"
+					class="aspect-square w-[70%] flex items-center justify-center flex-col relative"
+				>
+					<p class="absolute top-2 left-2 bg-white bg-opacity-80 px-2 py-1 text-xl rounded z-10 orbiton-font text-black">{{ laptop.page_score }}</p>
+					<p class="absolute top-2 right-2 bg-white bg-opacity-10 px-2 py-1 text-xl rounded z-10 orbiton-font text-red-500">{{ laptop.user_score }}</p>
+					<img 
+						:src="laptop.image_link" 
+						:alt="`${laptop.name} image`" 
+						class=""
+					/>
+					{{ `${laptop.name} - ${laptop.price}€` }}
+				</Link>
+			</li>
+		</ul>
+	</section>
 
 	
 
@@ -227,6 +237,7 @@ option {
 
 .select_not_selected {
 	border: 2px solid black;
+	background-color: white;
 }
 
 .select_selected {
