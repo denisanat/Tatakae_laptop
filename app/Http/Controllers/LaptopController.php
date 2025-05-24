@@ -100,7 +100,28 @@ class LaptopController extends Controller
     public function show($id)
     {
         $laptop = Laptop::findOrFail($id);
-        $recomended = Laptop::take(10)->get();
+
+        // Laptop components
+        $laptop->model = $this->getHardwareName($laptop->model);
+        $laptop->processor = $this->getHardwareName($laptop->processor);
+        $laptop->graphics_card = $this->getHardwareName($laptop->graphics_card);
+        $laptop->memory = $this->getHardwareName($laptop->memory);
+        $laptop->storage = $this->getHardwareName($laptop->storage);
+        $laptop->display = $this->getHardwareName($laptop->display);
+        $laptop->battery = $this->getHardwareName($laptop->battery);
+
+        // Recomended laptops
+        $recomended = array();
+        $cont = 0;
+        while ( count($recomended) < 4 && $cont < 30 ) {
+            $randomId = rand(0, 100);
+            $recomendedLaptop = Laptop::find($randomId);
+
+            if ( $recomendedLaptop != null && $randomId != $id )
+                array_push($recomended, $recomendedLaptop);
+
+            $cont++;
+        }
 
         // Comments
         $messages = Message::where('target_id', '=', $id)->where('is_response', '=', false)->get();
@@ -111,6 +132,16 @@ class LaptopController extends Controller
             'userScore' => $laptop['user_score'],
             'messages' => $messages
         ]);
+    }
+
+    private function getHardwareName($idHardware)
+    {
+        $component = Hardware::find($idHardware);
+
+        if ( $component == NULL )
+            return 'MissingNo';
+
+        return $component->name;
     }
 
 
@@ -196,12 +227,24 @@ class LaptopController extends Controller
 
     public function createLaptop(Request $request)
     {
+        $score = $this->getHardwareScore($request->model);
+        $score += $this->getHardwareScore($request->processor);
+        $score += $this->getHardwareScore($request->graphic_card);
+        $score += $this->getHardwareScore($request->memory);
+        $score += $this->getHardwareScore($request->storage);
+        $score += $this->getHardwareScore($request->display);
+        $score = $score / 6;
+
+        $score = number_format((float)$score, 1);
+        $score = floatval($score);
+
         Laptop::create([
             'name' => $request->name,
             'price' => $request->price,
             'release_date' => $request->release_date,
             'buying_link' => $request->site_link,
             'image_link' => $request->image_link,
+            'page_score' => $score,
             
             'model' => $request->model,
             'processor' => $request->processor,
@@ -214,8 +257,21 @@ class LaptopController extends Controller
         return back();
     }
 
+    private function getHardwareScore($idHardware)
+    {
+        $component = Hardware::find($idHardware);
+
+        if ( $component == NULL )
+            return 0;
+
+        return $component->score;
+    }
+
     public function createHardware(Request $request)
     {
+        if ( $request->score == NULL )
+            $request->score = rand(1, 5);
+
         Hardware::create([
             'name' => $request->name,
             'hardware_type' => $request->type,

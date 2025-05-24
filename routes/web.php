@@ -16,8 +16,7 @@ Route::post('/laptop/{id}/rate', [LaptopController::class, 'rate'])->name('lapto
 Route::post('/laptop/{id}/comment', [LaptopController::class, 'comment'])->name('laptop.comment');
 Route::post('/laptop/{id}/reply', [LaptopController::class, 'reply'])->name('laptop.reply');
 
-Route::get('/messages/{id}/answers', [LaptopController::class, 'getAnswers']);
-
+Route::get('/laptop/{id}/answers', [LaptopController::class, 'getAnswers']);
 
 // CREATE ROUTES
 Route::get('/create', [LaptopController::class, 'goCreate'])->name('gocreate');

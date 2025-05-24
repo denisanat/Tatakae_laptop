@@ -21,7 +21,11 @@ const showReplyBox = (id) => {
 	reply.value = '';
 }
 
-const submitScore = () => { router.post(`/laptop/${props.laptop.id}/rate`, { score: score.value }, { preserveScroll: true }) };
+const submitScore = () => { 
+	router.post(`/laptop/${props.laptop.id}/rate`, 
+		{ score: score.value }, 
+		{ preserveScroll: true }) 
+};
 
 const submitComment = () => { 
 	router.post(`/laptop/${props.laptop.id}/comment`, { 
@@ -78,37 +82,71 @@ const submitReply = () => {
 			<p><span class="text-red-500">Memory: </span>{{ laptop.memory }}</p>
 			<p><span class="text-red-500">Storage: </span>{{ laptop.storage }}</p>
 			<p><span class="text-red-500">Display: </span>{{ laptop.display }}</p>
-			<p><span class="text-red-500">Battery: </span>{{ laptop.battery }}</p>
-			<p><span class="text-red-500">Power supply: </span>{{ laptop.power_supply }}</p>
 		</section>
 	</div>
 
-	<section id="comment_section" class="p-5 my-5 bg-white">
-		<h2 class="text-3xl">Comments</h2>
+	<div class="grid grid-cols-5 gap-5 mt-5">
 
-		<form @submit.prevent="submitComment">
-			<input type="text" v-model="comment" class="w-1/5 h-[2em]" placeholder="Comment something about this laptop">
-			<button class="primary-btn clickable_button">Submit</button>
-		</form>
+		<section id="comment_section" class="p-5 col-span-4 bg-white">
+			<h2 class="text-3xl">Comments</h2>
 
-		<div>
-			<ul v-for="message in messages" :key="message.id" class="my-10">
-				<li class="">
-					<p>{{ message.user_id }}</p>
-					<p class="text-gray-600">{{ message.message }}</p>
+			<form @submit.prevent="submitComment" class="mt-4">
+				<input 
+					type="text" 
+					v-model="comment" 
+					class="w-1/2 h-[2.4em] px-2 rounded-sm box-border" 
+					placeholder="Comment something about this laptop"
+				>
+				<button class="primary-btn clickable_button">Submit</button>
+			</form>
+
+			<div>
+				<ul v-for="message in messages" :key="message.id" class="my-10">
+					<li class="">
+						<p>{{ message.user_id }}</p>
+						<p class="text-gray-600">{{ message.message }}</p>
+					</li>
+					<button @click="showReplyBox(message.id)" class="clickable_button">Reply</button>
+					<button @click="showAnswers(message.id)" class="clickable_button">Show replies</button>
+					
+
+					<!-- Reply Box -->
+					<div v-if="replyingToId === message.id">
+						<input type="text" v-model="reply" placeholder="Your answer...">
+						<button @click="submitReply" class="clickable_button">Submit</button>
+					</div>
+				</ul>
+			</div>
+		</section>
+
+		<section class="bg-white p-5">
+			<h2 class="text-3xl">Related</h2>
+
+			<ul class="flex flex-wrap flex-col my-4 justify-around">
+				<li 
+					v-for="laptop in recomended" 
+					:key="laptop.id" 
+					class="flex justify-center"
+				>
+					<Link 
+						:href="`/laptop/${laptop.id}`"
+						class="aspect-square w-[70%] flex items-center justify-center flex-col relative"
+					>
+						<p class="absolute top-2 left-2 bg-white bg-opacity-80 px-2 py-1 text-xl rounded z-10 orbiton-font text-black">{{ laptop.page_score }}</p>
+						<p class="absolute top-2 right-2 bg-white bg-opacity-10 px-2 py-1 text-xl rounded z-10 orbiton-font text-red-500">{{ laptop.user_score }}</p>
+						<img 
+							:src="laptop.image_link" 
+							:alt="`${laptop.name} image`" 
+							class=""
+						/>
+						<p>{{ `${laptop.name} ` }}
+							<span class="bg-red-500 text-white inter-font-bold p-1">{{ `${laptop.price}€` }}</span></p>
+					</Link>
 				</li>
-				<button @click="showReplyBox(message.id)" class="clickable_button">Reply</button>
-				<button @click="showAnswers(message.id)" class="clickable_button">Show replies</button>
-				
-
-				<!-- Reply Box -->
-				<div v-if="replyingToId === message.id">
-					<input type="text" v-model="reply" placeholder="Your answer...">
-					<button @click="submitReply" class="clickable_button">Submit</button>
-				</div>
 			</ul>
-		</div>
-	</section>
+		</section>
+	</div>
+
 </template>
 
 <style>
@@ -124,9 +162,5 @@ const submitReply = () => {
   	font-optical-sizing: auto;
   	font-weight: 700;
   	font-style: normal;
-}
-
-#comment_section > * {
-	margin: 20px;
 }
 </style>

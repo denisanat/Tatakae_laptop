@@ -208,7 +208,8 @@ const getPaginationLabel = (label) => {
 						:alt="`${laptop.name} image`" 
 						class=""
 					/>
-					{{ `${laptop.name} - ${laptop.price}€` }}
+					<p>{{ `${laptop.name} ` }}
+					<span class="bg-red-500 text-white inter-font-bold p-1">{{ `${laptop.price}€` }}</span></p>
 				</Link>
 			</li>
 		</ul>

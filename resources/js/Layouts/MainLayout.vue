@@ -72,7 +72,7 @@
 
 body {
   /* background: linear-gradient(to bottom, #ffffff, #f1f1f1); */
-  background-color: #fcfcfc;
+  background-color: #f9f9f9;
 }
 
 section {

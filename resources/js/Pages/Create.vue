@@ -72,7 +72,7 @@ const submit_hardware = () => {
 				<option v-for="graphic_card in graphic_cards" :value="graphic_card.id">{{ graphic_card.name }}</option>
 			</select>
 
-			<select class="h-[2.4em] w-4/5 px-2 rounded-sm box-border border-2 my-5" v-model="laptop_form.memory_card">
+			<select class="h-[2.4em] w-4/5 px-2 rounded-sm box-border border-2 my-5" v-model="laptop_form.memory">
 				<option v-for="memory_card in memory_cards" :value="memory_card.id">{{ memory_card.name }}</option>
 			</select>
 

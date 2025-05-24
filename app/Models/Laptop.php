@@ -14,6 +14,8 @@ class Laptop extends Model
         'release_date',
         'site_link',
         'image_link',
+        'page_score',
+
         'model',
         'processor',
         'graphic_card',
